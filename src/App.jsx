@@ -1,4 +1,7 @@
-import React, { useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
+import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import Lenis from 'lenis';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
   ArrowUpRight, 
@@ -14,6 +17,8 @@ import {
 } from 'lucide-react';
 import aboutPhoto from './assets/WhatsApp Image 2026-04-15 at 7.16.28 PM.jpeg';
 
+gsap.registerPlugin(ScrollTrigger);
+
 // Color Palette Constants
 const COLORS = {
   bg: '#F5F5F0', // Creamy Beige
@@ -22,6 +27,45 @@ const COLORS = {
   whiteSmoke: '#FFFFFF',
   softCream: '#EBEBE6'
 };
+
+const WORK_ITEMS = [
+  {
+    title: 'Quantum Fin',
+    category: 'Fintech • System Architecture',
+    summary: 'A premium investment platform with an editorial interface and data-heavy storytelling.',
+    accent: 'from-[#C02626] via-[#7a1010] to-[#121212]'
+  },
+  {
+    title: 'Nova Studio',
+    category: 'E-Commerce • Headless',
+    summary: 'A conversion-first storefront that balances luxury branding with rapid product discovery.',
+    accent: 'from-[#121212] via-[#3b3b3b] to-[#EBEBE6]'
+  },
+  {
+    title: 'Aetheric',
+    category: 'SaaS • UI/UX Strategy',
+    summary: 'A dashboard-led SaaS experience built around clarity, speed, and trust signals.',
+    accent: 'from-[#C02626] via-[#EBEBE6] to-[#121212]'
+  },
+  {
+    title: 'Luxe Living',
+    category: 'Real Estate • Branding',
+    summary: 'A spatial portfolio system designed to sell premium properties without friction.',
+    accent: 'from-[#121212] via-[#C02626] to-[#F5F5F0]'
+  },
+  {
+    title: 'Pulse',
+    category: 'Healthtech • Mobile App',
+    summary: 'A responsive care app with a confident mobile flow and strong product hierarchy.',
+    accent: 'from-[#EBEBE6] via-[#C02626] to-[#121212]'
+  },
+  {
+    title: 'The Vault',
+    category: 'Security • Web3',
+    summary: 'A secure, cinematic interface that turns complex infrastructure into a premium product.',
+    accent: 'from-[#121212] via-[#0f2d3d] to-[#C02626]'
+  }
+];
 
 const revealVariants = {
   left: {
@@ -158,7 +202,226 @@ const ServiceItem = ({ icon: Icon, title, description, bgImg }) => (
   </div>
 );
 
+const StickyWorkCard = ({ item, index, cardRef }) => {
+  return (
+    <article
+      ref={cardRef}
+      className="work-card rounded-[2rem] border-2 border-[#121212] overflow-hidden bg-[#F5F5F0] shadow-[0_24px_80px_rgba(18,18,18,0.18)]"
+      style={{
+        transformOrigin: 'bottom center',
+        transformStyle: 'preserve-3d',
+        backfaceVisibility: 'hidden',
+        WebkitBackfaceVisibility: 'hidden',
+        willChange: 'transform, opacity',
+        position: 'absolute',
+        top: '50%',
+        left: '50%',
+        width: '100%',
+        height: '100%',
+        maxWidth: 'none',
+        maxHeight: 'none',
+        boxSizing: 'border-box'
+      }}
+    >
+      <div className={`h-[56%] bg-gradient-to-br ${item.accent} relative overflow-hidden`}>
+        <div className="absolute inset-0 opacity-20 bg-[radial-gradient(circle_at_top_left,_white,_transparent_35%)]" />
+        <div className="absolute inset-0 flex items-end justify-between p-4 md:p-6 text-white">
+          <div>
+            <p className="text-xs uppercase tracking-[0.35em] font-black opacity-80">
+              {String(index + 1).padStart(2, '0')}
+            </p>
+            <h3 className="text-3xl md:text-5xl font-black italic tracking-tighter uppercase leading-none mt-2">
+              {item.title}
+            </h3>
+          </div>
+          <div className="hidden md:block text-right max-w-xs">
+            <p className="text-xs uppercase tracking-[0.3em] font-black opacity-80">Stack</p>
+            <p className="mt-2 text-xs leading-tight opacity-90">3D peel effect</p>
+          </div>
+        </div>
+      </div>
+
+      <div className="grid grid-cols-1 md:grid-cols-[1.1fr_0.9fr] gap-0 h-[44%]">
+        <div className="p-4 md:p-6 bg-[#F5F5F0] border-r-0 md:border-r-2 border-[#121212] flex flex-col justify-between overflow-hidden">
+          <div>
+            <p className="text-[0.65rem] md:text-sm font-black uppercase tracking-[0.35em] text-[#C02626] mb-2">{item.category}</p>
+            <p className="text-sm md:text-base leading-relaxed font-medium max-w-2xl">{item.summary}</p>
+          </div>
+        </div>
+        <div className="p-4 md:p-6 bg-white flex items-center justify-between md:justify-end md:flex-col md:items-end gap-2 md:gap-4 overflow-hidden">
+          <div className="text-right">
+            <p className="text-xs font-black uppercase tracking-[0.35em] opacity-50">Scroll</p>
+            <p className="text-2xl md:text-4xl font-black italic tracking-tighter leading-none">0{index + 1}</p>
+          </div>
+          <div className="w-12 h-12 md:w-14 md:h-14 rounded-full border-2 border-[#121212] flex items-center justify-center bg-[#EBEBE6]">
+            <ArrowUpRight size={20} />
+          </div>
+        </div>
+      </div>
+    </article>
+  );
+};
+
 export default function App() {
+  const workSectionRef = useRef(null);
+  const workStackRef = useRef(null);
+  const workTitleRef = useRef(null);
+  const workCardRefs = useRef([]);
+
+  useEffect(() => {
+    const lenis = new Lenis({
+      lerp: 0.08,
+      smoothWheel: true,
+      smoothTouch: false
+    });
+
+    const raf = (time) => {
+      lenis.raf(time);
+      requestAnimationFrame(raf);
+    };
+
+    const animationFrame = requestAnimationFrame(raf);
+    lenis.on('scroll', ScrollTrigger.update);
+
+    const cards = workCardRefs.current.filter(Boolean);
+    const section = workSectionRef.current;
+    const stack = workStackRef.current;
+    const title = workTitleRef.current;
+    const cleanupTriggers = [];
+
+    if (section && stack && title && cards.length) {
+      const totalCards = cards.length;
+      const segmentSize = 1 / totalCards;
+      const TITLE_PHASE = 0.2;
+      const ENTRY_PHASE = 0.12;
+      const PEEL_START = TITLE_PHASE + ENTRY_PHASE;
+      const isMobile = window.matchMedia('(max-width: 767px)').matches;
+      const titleLift = isMobile ? 120 : 180;
+      const entryOffset = isMobile ? 24 : 48;
+
+      gsap.set(title, {
+        y: 0,
+        opacity: 1
+      });
+
+      gsap.set(stack, {
+        opacity: 0,
+        y: entryOffset
+      });
+
+      // Initial stacking (8pt grid based offsets)
+      cards.forEach((card, index) => {
+        gsap.set(card, {
+          xPercent: -50,
+          yPercent: -50,
+          y: index * 16,
+          scale: 1 - index * 0.04,
+          zIndex: totalCards - index,
+          opacity: 1
+        });
+      });
+
+      const scrollTrigger = ScrollTrigger.create({
+        trigger: section,
+        start: 'top top',
+        end: `+=${totalCards * 150}%`,
+        pin: true,
+        scrub: 1,
+        invalidateOnRefresh: true,
+        onUpdate: (self) => {
+          const progress = Math.min(self.progress, 0.9999);
+          const titleProgress = Math.min(progress / TITLE_PHASE, 1);
+          const entryProgress = Math.min(
+            Math.max((progress - TITLE_PHASE) / ENTRY_PHASE, 0),
+            1
+          );
+          const peelProgress = Math.min(
+            Math.max((progress - PEEL_START) / (1 - PEEL_START), 0),
+            0.9999
+          );
+          const isPeelPhase = progress >= PEEL_START;
+
+          gsap.set(title, {
+            y: -titleProgress * titleLift,
+            opacity: 1 - titleProgress,
+            force3D: true
+          });
+
+          gsap.set(stack, {
+            opacity: entryProgress,
+            y: (1 - entryProgress) * entryOffset,
+            force3D: true
+          });
+
+          if (!isPeelPhase) {
+            // Phase 1 (entry): stack settles into center; no peeling yet.
+            cards.forEach((card, index) => {
+              gsap.set(card, {
+                y: index * 16,
+                scale: 1 - index * 0.04,
+                rotationX: 0,
+                opacity: 1,
+                visibility: 'visible',
+                pointerEvents: 'auto'
+              });
+            });
+            return;
+          }
+
+          const activeIndex = Math.min(
+            Math.floor(peelProgress / segmentSize),
+            totalCards - 1
+          );
+          const segmentProgress = (peelProgress % segmentSize) / segmentSize;
+
+          cards.forEach((card, index) => {
+            if (index < activeIndex) {
+              // PAST: Card has already peeled off (stays offscreen)
+              gsap.set(card, {
+                y: -1200,
+                rotationX: 60,
+                opacity: 0,
+                pointerEvents: 'none',
+                visibility: 'hidden'
+              });
+            } else if (index === activeIndex) {
+              // PRESENT: The active 'peeling' card
+              gsap.set(card, {
+                y: index * 16 - segmentProgress * 800,
+                rotationX: segmentProgress * 45,
+                scale: 1,
+                opacity: 1 - segmentProgress * 0.5,
+                pointerEvents: 'auto',
+                visibility: 'visible'
+              });
+            } else {
+              // FUTURE: Cards waiting to move forward
+              const behindIndex = index - activeIndex;
+              gsap.set(card, {
+                y: behindIndex * 16 - segmentProgress * 16,
+                scale: 1 - behindIndex * 0.04 + segmentProgress * 0.04,
+                rotationX: 0,
+                opacity: 1,
+                pointerEvents: 'auto',
+                visibility: 'visible'
+              });
+            }
+          });
+        }
+      });
+
+      cleanupTriggers.push(scrollTrigger);
+    }
+
+    return () => {
+      cancelAnimationFrame(animationFrame);
+      lenis.destroy();
+      cleanupTriggers.forEach((trigger) => trigger.kill());
+    };
+  }, []);
+
+  workCardRefs.current = [];
+
   return (
     <div className="min-h-screen bg-[#F5F5F0] text-[#121212] font-sans overflow-x-hidden selection:bg-[#C02626] selection:text-white scroll-smooth">
       <Navbar />
@@ -201,26 +464,48 @@ export default function App() {
       <Marquee text="Engineered for the Digital Frontier" reverse />
 
       {/* Projects Section */}
-      <section id="work" className="py-24 md:py-32 px-6 bg-[#F5F5F0]">
+      <section id="work" ref={workSectionRef} className="bg-[#F5F5F0]">
         <div className="max-w-7xl mx-auto">
-          <div className="flex flex-col md:flex-row justify-between items-end mb-20 gap-8">
-            <h2 className="text-5xl sm:text-7xl md:text-9xl font-black italic tracking-tighter uppercase leading-none">
-              Selected<br/><span className="text-[#C02626]">Works</span>
-            </h2>
-            <div className="max-w-md text-right">
-              <p className="text-xl font-medium opacity-70 uppercase tracking-widest">
-                Deployments that set the standard for 2026 and beyond.
-              </p>
+          <div className="relative min-h-screen min-h-[100svh] w-full p-[clamp(20px,5vw,56px)] overflow-visible">
+            <div
+              ref={workTitleRef}
+              className="absolute inset-x-[clamp(20px,5vw,56px)] top-[clamp(20px,5vw,56px)] flex flex-col md:flex-row justify-between items-start md:items-end gap-6 md:gap-8 will-change-transform z-20"
+            >
+              <h2 className="text-4xl sm:text-6xl md:text-9xl font-black italic tracking-tighter uppercase leading-none">
+                Selected<br/><span className="text-[#C02626]">Works</span>
+              </h2>
+              <div className="max-w-md text-left md:text-right">
+                <p className="text-base md:text-xl font-medium opacity-70 uppercase tracking-widest">
+                  Sticky card stack that peels off one by one.
+                </p>
+              </div>
             </div>
-          </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            <ProjectCard title="Quantum Fin" category="Fintech • System Architecture" />
-            <ProjectCard title="Nova Studio" category="E-Commerce • Headless" />
-            <ProjectCard title="Aetheric" category="SaaS • UI/UX Strategy" />
-            <ProjectCard title="Luxe Living" category="Real Estate • Branding" />
-            <ProjectCard title="Pulse" category="Healthtech • Mobile App" />
-            <ProjectCard title="The Vault" category="Security • Web3" />
+            <div
+              className="absolute inset-0 flex items-center justify-center p-[clamp(20px,5vw,56px)] overflow-visible"
+            >
+              <div
+                ref={workStackRef}
+                className="relative overflow-visible"
+                style={{
+                  perspective: '1200px',
+                  width: 'min(88vw, 900px)',
+                  aspectRatio: '16 / 10',
+                  maxHeight: '75svh'
+                }}
+              >
+                {WORK_ITEMS.map((item, index) => (
+                  <StickyWorkCard
+                    key={item.title}
+                    item={item}
+                    index={index}
+                    cardRef={(node) => {
+                      workCardRefs.current[index] = node;
+                    }}
+                  />
+                ))}
+              </div>
+            </div>
           </div>
         </div>
       </section>
@@ -304,16 +589,16 @@ export default function App() {
             </p>
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-8 sm:gap-6">
               <div>
-                <p className="text-3xl md:text-4xl font-black italic tracking-tighter">Fast</p>
-                <p className="text-xs font-bold uppercase tracking-widest opacity-60">Loads quickly</p>
+                <p className="text-3xl md:text-4xl font-black italic tracking-tighter mb-2">Speed</p>
+                <p className="text-xs font-bold uppercase tracking-widest opacity-60">Done fast, done right.</p>
               </div>
               <div>
-                <p className="text-3xl md:text-4xl font-black italic tracking-tighter">Responsive</p>
-                <p className="text-xs font-bold uppercase tracking-widest opacity-60">Works on all screens</p>
+                <p className="text-3xl md:text-4xl font-black italic tracking-tighter mb-2">Beauty</p>
+                <p className="text-xs font-bold uppercase tracking-widest opacity-60">Designs that stop the scroll.</p>
               </div>
               <div>
-                <p className="text-3xl md:text-4xl font-black italic tracking-tighter">ROI</p>
-                <p className="text-xs font-bold uppercase tracking-widest opacity-60">Built to convert</p>
+                <p className="text-3xl md:text-4xl font-black italic tracking-tighter mb-2">Results</p>
+                <p className="text-xs font-bold uppercase tracking-widest opacity-60">Built to convert.</p>
               </div>
             </div>
           </div>
