@@ -90,7 +90,7 @@ const ScrollReveal = ({ children, direction = 'left', delay = 0 }) => (
   </motion.div>
 );
 
-const Navbar = () => {
+const Navbar = ({ onWorkClick }) => {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
@@ -105,7 +105,7 @@ const Navbar = () => {
       
       {/* Desktop Menu */}
       <div className="hidden md:flex gap-12 font-medium text-sm tracking-widest uppercase">
-        <a href="#work" className="hover:line-through transition-all">Work</a>
+        <button type="button" onClick={onWorkClick} className="hover:line-through transition-all">Work</button>
         <a href="#services" className="hover:line-through transition-all">Services</a>
         <a href="#about" className="hover:line-through transition-all">About</a>
         <a href="#contact" className="hover:line-through transition-all">Contact</a>
@@ -123,9 +123,9 @@ const Navbar = () => {
             initial={{ opacity: 0, x: '100%' }}
             animate={{ opacity: 1, x: 0 }}
             exit={{ opacity: 0, x: '100%' }}
-            className="fixed inset-0 bg-[#121212] flex flex-col items-center justify-center gap-8 text-3xl font-bold uppercase tracking-widest"
+            className="fixed inset-0 bg-[#121212] text-white flex flex-col items-center justify-center gap-8 text-3xl font-bold uppercase tracking-widest"
           >
-            <a href="#work" onClick={() => setIsOpen(false)}>Work</a>
+            <button type="button" onClick={() => { setIsOpen(false); onWorkClick?.(); }}>Work</button>
             <a href="#services" onClick={() => setIsOpen(false)}>Services</a>
             <a href="#about" onClick={() => setIsOpen(false)}>About</a>
             <a href="#contact" onClick={() => setIsOpen(false)}>Contact</a>
@@ -267,6 +267,30 @@ export default function App() {
   const workStackRef = useRef(null);
   const workTitleRef = useRef(null);
   const workCardRefs = useRef([]);
+  const lenisRef = useRef(null);
+  const workTriggerRef = useRef(null);
+
+  const scrollToWorkTop = () => {
+    const trigger = workTriggerRef.current;
+
+    if (!trigger) return;
+
+    const targetScroll = Math.max(trigger.start - 12, 0);
+
+    if (lenisRef.current) {
+      lenisRef.current.scrollTo(targetScroll, {
+        immediate: false,
+        duration: 2.3,
+        offset: 0
+      });
+      return;
+    }
+
+    window.scrollTo({
+      top: targetScroll,
+      behavior: 'smooth'
+    });
+  };
 
   useEffect(() => {
     const lenis = new Lenis({
@@ -274,6 +298,7 @@ export default function App() {
       smoothWheel: true,
       smoothTouch: false
     });
+    lenisRef.current = lenis;
 
     const raf = (time) => {
       lenis.raf(time);
@@ -292,12 +317,13 @@ export default function App() {
     if (section && stack && title && cards.length) {
       const totalCards = cards.length;
       const segmentSize = 1 / totalCards;
-      const TITLE_PHASE = 0.2;
-      const ENTRY_PHASE = 0.12;
-      const PEEL_START = TITLE_PHASE + ENTRY_PHASE;
       const isMobile = window.matchMedia('(max-width: 767px)').matches;
-      const titleLift = isMobile ? 120 : 180;
-      const entryOffset = isMobile ? 24 : 48;
+      const TITLE_PHASE = isMobile ? 0.1 : 0.2;
+      const ENTRY_PHASE = isMobile ? 0.06 : 0.12;
+      const PEEL_START = TITLE_PHASE + ENTRY_PHASE;
+      const titleLift = isMobile ? 48 : 180;
+      const entryOffset = isMobile ? 0 : 48;
+      const cardTravel = isMobile ? 620 : 800;
 
       gsap.set(title, {
         y: 0,
@@ -324,7 +350,7 @@ export default function App() {
       const scrollTrigger = ScrollTrigger.create({
         trigger: section,
         start: 'top top',
-        end: `+=${totalCards * 150}%`,
+        end: () => `+=${Math.round(window.innerHeight * (isMobile ? totalCards + 0.15 : totalCards + 0.35))}`,
         pin: true,
         scrub: 1,
         invalidateOnRefresh: true,
@@ -349,7 +375,7 @@ export default function App() {
 
           gsap.set(stack, {
             opacity: entryProgress,
-            y: (1 - entryProgress) * entryOffset,
+            y: isMobile ? 0 : (1 - entryProgress) * entryOffset,
             force3D: true
           });
 
@@ -388,7 +414,7 @@ export default function App() {
               // PRESENT: The active 'peeling' card
               gsap.set(card, {
                 // Start peel exactly from the current stacked slot (no downward jump).
-                y: (index - activeIndex) * 16 - segmentProgress * 800,
+                y: (index - activeIndex) * 16 - segmentProgress * cardTravel,
                 rotationX: segmentProgress * 45,
                 scale: 1,
                 opacity: 1 - segmentProgress * 0.5,
@@ -411,10 +437,13 @@ export default function App() {
         }
       });
 
+      workTriggerRef.current = scrollTrigger;
       cleanupTriggers.push(scrollTrigger);
     }
 
     return () => {
+      lenisRef.current = null;
+      workTriggerRef.current = null;
       cancelAnimationFrame(animationFrame);
       lenis.destroy();
       cleanupTriggers.forEach((trigger) => trigger.kill());
@@ -425,7 +454,7 @@ export default function App() {
 
   return (
     <div className="min-h-screen bg-[#F5F5F0] text-[#121212] font-sans overflow-x-hidden selection:bg-[#C02626] selection:text-white scroll-smooth">
-      <Navbar />
+      <Navbar onWorkClick={scrollToWorkTop} />
 
       {/* Hero Section */}
       <header className="relative h-screen flex flex-col justify-center items-center px-6 overflow-hidden">
@@ -455,7 +484,7 @@ export default function App() {
               A high-end web architecture studio. We design, build, and scale digital products that define industries.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 mt-6 w-full sm:w-auto px-4 sm:px-0">
-              <a href="#work" className="bg-[#121212] text-white px-8 py-4 rounded-full font-bold uppercase tracking-widest text-sm hover:bg-[#C02626] transition-colors">View Projects</a>
+              <button type="button" onClick={scrollToWorkTop} className="bg-[#121212] text-white px-8 py-4 rounded-full font-bold uppercase tracking-widest text-sm hover:bg-[#C02626] transition-colors">View Projects</button>
               <button onClick={() => window.open('https://forms.gle/kRLz3wktyXg8ajANA', '_blank')} className="border-2 border-[#121212] px-8 py-4 rounded-full font-bold uppercase tracking-widest text-sm hover:bg-[#121212] hover:text-white transition-all">Start Project</button>
             </div>
           </motion.div>
@@ -465,11 +494,12 @@ export default function App() {
       <Marquee text="Engineered for the Digital Frontier" reverse />
 
       {/* Projects Section */}
-      <section id="work" ref={workSectionRef} className="bg-[#F5F5F0]">
+      <section id="work" ref={workSectionRef} className="bg-[#F5F5F0] scroll-mt-20 md:scroll-mt-28">
         <div className="max-w-7xl mx-auto">
           <div className="relative min-h-screen min-h-[100svh] w-full p-[clamp(20px,5vw,56px)] overflow-visible">
             <div
               ref={workTitleRef}
+              id="work-top"
               className="absolute inset-x-[clamp(20px,5vw,56px)] top-[clamp(20px,5vw,56px)] flex flex-col md:flex-row justify-between items-start md:items-end gap-6 md:gap-8 will-change-transform z-20"
             >
               <h2 className="text-4xl sm:text-6xl md:text-9xl font-black italic tracking-tighter uppercase leading-none">
