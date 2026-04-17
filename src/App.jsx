@@ -203,12 +203,14 @@ const ServiceItem = ({ icon: Icon, title, description, bgImg }) => (
 );
 
 const StickyWorkCard = ({ item, index, cardRef }) => {
+  const isMobile = typeof window !== 'undefined' && window.matchMedia('(max-width: 767px)').matches;
+  
   return (
     <article
       ref={cardRef}
-      className="work-card rounded-[2rem] border-2 border-[#121212] overflow-hidden bg-[#F5F5F0] shadow-[0_24px_80px_rgba(18,18,18,0.18)]"
+      className="work-card rounded-2xl md:rounded-[2rem] border-2 border-[#121212] overflow-hidden bg-[#F5F5F0] shadow-[0_24px_80px_rgba(18,18,18,0.18)]"
       style={{
-        transformOrigin: 'bottom center',
+        transformOrigin: 'top center',
         transformStyle: 'preserve-3d',
         backfaceVisibility: 'hidden',
         WebkitBackfaceVisibility: 'hidden',
@@ -223,41 +225,85 @@ const StickyWorkCard = ({ item, index, cardRef }) => {
         boxSizing: 'border-box'
       }}
     >
-      <div className={`h-[56%] bg-gradient-to-br ${item.accent} relative overflow-hidden`}>
-        <div className="absolute inset-0 opacity-20 bg-[radial-gradient(circle_at_top_left,_white,_transparent_35%)]" />
-        <div className="absolute inset-0 flex items-end justify-between p-4 md:p-6 text-white">
-          <div>
-            <p className="text-xs uppercase tracking-[0.35em] font-black opacity-80">
-              {String(index + 1).padStart(2, '0')}
-            </p>
-            <h3 className="text-3xl md:text-5xl font-black italic tracking-tighter uppercase leading-none mt-2">
-              {item.title}
-            </h3>
+      {/* Mobile: Credit-card layout (2 sections) */}
+      {isMobile ? (
+        <>
+          {/* Top Half: Gradient background with card number and title */}
+          <div className={`h-1/2 bg-gradient-to-br ${item.accent} relative overflow-hidden flex flex-col justify-between p-4`}>
+            <div className="absolute inset-0 opacity-20 bg-[radial-gradient(circle_at_top_left,_white,_transparent_35%)]" />
+            <div className="relative z-10">
+              <p className="text-[10px] uppercase tracking-[0.3em] font-black opacity-80 text-white">
+                {String(index + 1).padStart(2, '0')}
+              </p>
+            </div>
+            <div className="relative z-10">
+              <h3 className="text-2xl font-black italic tracking-tighter uppercase leading-tight text-white">
+                {item.title}
+              </h3>
+            </div>
           </div>
-          <div className="hidden md:block text-right max-w-xs">
-            <p className="text-xs uppercase tracking-[0.3em] font-black opacity-80">Stack</p>
-            <p className="mt-2 text-xs leading-tight opacity-90">3D peel effect</p>
+          
+          {/* Bottom Half: White background with category, description, scroll indicator */}
+          <div className="h-1/2 bg-white flex flex-col justify-between p-4">
+            <div>
+              <p className="text-[10px] font-black uppercase tracking-[0.35em] text-[#C02626] mb-2">
+                {item.category}
+              </p>
+              <p className="text-xs leading-snug font-medium text-[#121212]">
+                {item.summary}
+              </p>
+            </div>
+            <div className="flex items-end justify-between gap-2">
+              <div className="text-left">
+                <p className="text-[9px] font-black uppercase tracking-[0.3em] opacity-50">Scroll</p>
+                <p className="text-lg font-black italic tracking-tighter leading-none">0{index + 1}</p>
+              </div>
+              <div className="w-10 h-10 rounded-full border-2 border-[#121212] flex items-center justify-center bg-[#EBEBE6] flex-shrink-0">
+                <ArrowUpRight size={16} />
+              </div>
+            </div>
           </div>
-        </div>
-      </div>
+        </>
+      ) : (
+        /* Desktop: Original multi-column layout */
+        <>
+          <div className={`h-[56%] bg-gradient-to-br ${item.accent} relative overflow-hidden`}>
+            <div className="absolute inset-0 opacity-20 bg-[radial-gradient(circle_at_top_left,_white,_transparent_35%)]" />
+            <div className="absolute inset-0 flex items-end justify-between p-6 text-white">
+              <div>
+                <p className="text-xs uppercase tracking-[0.35em] font-black opacity-80">
+                  {String(index + 1).padStart(2, '0')}
+                </p>
+                <h3 className="text-5xl font-black italic tracking-tighter uppercase leading-none mt-2">
+                  {item.title}
+                </h3>
+              </div>
+              <div className="text-right max-w-xs">
+                <p className="text-xs uppercase tracking-[0.3em] font-black opacity-80">Stack</p>
+                <p className="mt-2 text-xs leading-tight opacity-90">3D peel effect</p>
+              </div>
+            </div>
+          </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-[1.1fr_0.9fr] gap-0 h-[44%]">
-        <div className="p-4 md:p-6 bg-[#F5F5F0] border-r-0 md:border-r-2 border-[#121212] flex flex-col justify-between overflow-hidden">
-          <div>
-            <p className="text-[0.65rem] md:text-sm font-black uppercase tracking-[0.35em] text-[#C02626] mb-2">{item.category}</p>
-            <p className="text-sm md:text-base leading-relaxed font-medium max-w-2xl">{item.summary}</p>
+          <div className="grid grid-cols-[1.1fr_0.9fr] gap-0 h-[44%]">
+            <div className="p-6 bg-[#F5F5F0] border-r-2 border-[#121212] flex flex-col justify-between overflow-hidden">
+              <div>
+                <p className="text-sm font-black uppercase tracking-[0.35em] text-[#C02626] mb-2">{item.category}</p>
+                <p className="text-base leading-relaxed font-medium max-w-2xl">{item.summary}</p>
+              </div>
+            </div>
+            <div className="p-6 bg-white flex flex-col items-end justify-between gap-4 overflow-hidden">
+              <div className="text-right">
+                <p className="text-xs font-black uppercase tracking-[0.35em] opacity-50">Scroll</p>
+                <p className="text-4xl font-black italic tracking-tighter leading-none">0{index + 1}</p>
+              </div>
+              <div className="w-14 h-14 rounded-full border-2 border-[#121212] flex items-center justify-center bg-[#EBEBE6]">
+                <ArrowUpRight size={20} />
+              </div>
+            </div>
           </div>
-        </div>
-        <div className="p-4 md:p-6 bg-white flex items-center justify-between md:justify-end md:flex-col md:items-end gap-2 md:gap-4 overflow-hidden">
-          <div className="text-right">
-            <p className="text-xs font-black uppercase tracking-[0.35em] opacity-50">Scroll</p>
-            <p className="text-2xl md:text-4xl font-black italic tracking-tighter leading-none">0{index + 1}</p>
-          </div>
-          <div className="w-12 h-12 md:w-14 md:h-14 rounded-full border-2 border-[#121212] flex items-center justify-center bg-[#EBEBE6]">
-            <ArrowUpRight size={20} />
-          </div>
-        </div>
-      </div>
+        </>
+      )}
     </article>
   );
 };
@@ -298,6 +344,7 @@ export default function App() {
       const isMobile = window.matchMedia('(max-width: 767px)').matches;
       const titleLift = isMobile ? 120 : 180;
       const entryOffset = isMobile ? 24 : 48;
+      const TITLE_EXIT_PHASE = isMobile ? 0.08 : 0.15; // Faster title exit: 8% on mobile, 15% on desktop
 
       gsap.set(title, {
         y: 0,
@@ -330,16 +377,17 @@ export default function App() {
         invalidateOnRefresh: true,
         onUpdate: (self) => {
           const progress = Math.min(self.progress, 0.9999);
-          const titleProgress = Math.min(progress / TITLE_PHASE, 1);
+          // Faster title exit on mobile: 8% vs 20% previously
+          const titleProgress = Math.min(progress / TITLE_EXIT_PHASE, 1);
           const entryProgress = Math.min(
-            Math.max((progress - TITLE_PHASE) / ENTRY_PHASE, 0),
+            Math.max((progress - TITLE_EXIT_PHASE) / ENTRY_PHASE, 0),
             1
           );
           const peelProgress = Math.min(
-            Math.max((progress - PEEL_START) / (1 - PEEL_START), 0),
+            Math.max((progress - (TITLE_EXIT_PHASE + ENTRY_PHASE)) / (1 - (TITLE_EXIT_PHASE + ENTRY_PHASE)), 0),
             0.9999
           );
-          const isPeelPhase = progress >= PEEL_START;
+          const isPeelPhase = progress >= (TITLE_EXIT_PHASE + ENTRY_PHASE);
 
           gsap.set(title, {
             y: -titleProgress * titleLift,
@@ -385,11 +433,12 @@ export default function App() {
                 visibility: 'hidden'
               });
             } else if (index === activeIndex) {
-              // PRESENT: The active 'peeling' card
+              // PRESENT: The active 'peeling' card - peel from top center without downward drop
               gsap.set(card, {
-                y: index * 16 - segmentProgress * 800,
+                y: index * 16 + segmentProgress * 120,
+                x: segmentProgress * 200,
                 rotationX: segmentProgress * 45,
-                scale: 1,
+                scale: 1 - segmentProgress * 0.1,
                 opacity: 1 - segmentProgress * 0.5,
                 pointerEvents: 'auto',
                 visibility: 'visible'
@@ -466,7 +515,7 @@ export default function App() {
       {/* Projects Section */}
       <section id="work" ref={workSectionRef} className="bg-[#F5F5F0]">
         <div className="max-w-7xl mx-auto">
-          <div className="relative min-h-screen min-h-[100svh] w-full p-[clamp(20px,5vw,56px)] overflow-visible">
+          <div className="relative min-h-screen min-h-[100svh] w-full p-[clamp(20px,5vw,56px)] overflow-visible" style={{ marginTop: '-60px', paddingTop: '60px' }}>
             <div
               ref={workTitleRef}
               className="absolute inset-x-[clamp(20px,5vw,56px)] top-[clamp(20px,5vw,56px)] flex flex-col md:flex-row justify-between items-start md:items-end gap-6 md:gap-8 will-change-transform z-20"
@@ -491,7 +540,7 @@ export default function App() {
                   perspective: '1200px',
                   width: 'min(88vw, 900px)',
                   aspectRatio: '16 / 10',
-                  maxHeight: '75svh'
+                  maxHeight: window.matchMedia('(max-width: 767px)').matches ? '55svh' : '75svh'
                 }}
               >
                 {WORK_ITEMS.map((item, index) => (
