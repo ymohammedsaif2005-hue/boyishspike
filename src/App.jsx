@@ -125,6 +125,14 @@ const Navbar = ({ onWorkClick }) => {
             exit={{ opacity: 0, x: '100%' }}
             className="fixed inset-0 bg-white text-[#C02626] flex flex-col items-center justify-center gap-8 text-3xl font-bold uppercase tracking-widest"
           >
+            <button
+              type="button"
+              onClick={() => setIsOpen(false)}
+              className="absolute top-6 right-6 rounded-full border-2 border-[#C02626] p-2"
+              aria-label="Close menu"
+            >
+              <X size={28} />
+            </button>
             <button type="button" onClick={() => { setIsOpen(false); onWorkClick?.(); }}>Work</button>
             <a href="#services" onClick={() => setIsOpen(false)}>Services</a>
             <a href="#about" onClick={() => setIsOpen(false)}>About</a>
@@ -500,7 +508,7 @@ export default function App() {
             <div
               ref={workTitleRef}
               id="work-top"
-              className="absolute inset-x-[clamp(20px,5vw,56px)] top-[clamp(20px,5vw,56px)] flex flex-col md:flex-row justify-between items-start md:items-end gap-6 md:gap-8 will-change-transform z-20"
+              className="absolute inset-x-[clamp(20px,5vw,56px)] top-[88px] md:top-[clamp(20px,5vw,56px)] flex flex-col md:flex-row justify-between items-start md:items-end gap-6 md:gap-8 will-change-transform z-20"
             >
               <h2 className="text-4xl sm:text-6xl md:text-9xl font-black italic tracking-tighter uppercase leading-none">
                 Selected<br/><span className="text-[#C02626]">Works</span>
