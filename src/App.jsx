@@ -223,37 +223,37 @@ const StickyWorkCard = ({ item, index, cardRef }) => {
         boxSizing: 'border-box'
       }}
     >
-      <div className={`h-[56%] bg-gradient-to-br ${item.accent} relative overflow-hidden`}>
+      <div className={`work-card-top h-[56%] bg-gradient-to-br ${item.accent} relative overflow-hidden`}>
         <div className="absolute inset-0 opacity-20 bg-[radial-gradient(circle_at_top_left,_white,_transparent_35%)]" />
-        <div className="absolute inset-0 flex items-end justify-between p-4 md:p-6 text-white">
+        <div className="work-card-top-content absolute inset-0 flex items-end justify-between p-4 md:p-6 text-white">
           <div>
             <p className="text-xs uppercase tracking-[0.35em] font-black opacity-80">
               {String(index + 1).padStart(2, '0')}
             </p>
-            <h3 className="text-3xl md:text-5xl font-black italic tracking-tighter uppercase leading-none mt-2">
+            <h3 className="work-card-title text-3xl md:text-5xl font-black italic tracking-tighter uppercase leading-none mt-2">
               {item.title}
             </h3>
           </div>
-          <div className="hidden md:block text-right max-w-xs">
+          <div className="work-card-meta hidden md:block text-right max-w-xs">
             <p className="text-xs uppercase tracking-[0.3em] font-black opacity-80">Stack</p>
             <p className="mt-2 text-xs leading-tight opacity-90">3D peel effect</p>
           </div>
         </div>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-[1.1fr_0.9fr] gap-0 h-[44%]">
-        <div className="p-4 md:p-6 bg-[#F5F5F0] border-r-0 md:border-r-2 border-[#121212] flex flex-col justify-between overflow-hidden">
+      <div className="work-card-bottom grid grid-cols-1 md:grid-cols-[1.1fr_0.9fr] gap-0 h-[44%]">
+        <div className="work-card-bottom-left p-4 md:p-6 bg-[#F5F5F0] border-r-0 md:border-r-2 border-[#121212] flex flex-col justify-between overflow-hidden">
           <div>
-            <p className="text-[0.65rem] md:text-sm font-black uppercase tracking-[0.35em] text-[#C02626] mb-2">{item.category}</p>
-            <p className="text-sm md:text-base leading-relaxed font-medium max-w-2xl">{item.summary}</p>
+            <p className="work-card-category text-[0.65rem] md:text-sm font-black uppercase tracking-[0.35em] text-[#C02626] mb-2">{item.category}</p>
+            <p className="work-card-summary text-sm md:text-base leading-relaxed font-medium max-w-2xl">{item.summary}</p>
           </div>
         </div>
-        <div className="p-4 md:p-6 bg-white flex items-center justify-between md:justify-end md:flex-col md:items-end gap-2 md:gap-4 overflow-hidden">
-          <div className="text-right">
+        <div className="work-card-bottom-right p-4 md:p-6 bg-white flex items-center justify-between md:justify-end md:flex-col md:items-end gap-2 md:gap-4 overflow-hidden">
+          <div className="work-card-scroll text-right">
             <p className="text-xs font-black uppercase tracking-[0.35em] opacity-50">Scroll</p>
             <p className="text-2xl md:text-4xl font-black italic tracking-tighter leading-none">0{index + 1}</p>
           </div>
-          <div className="w-12 h-12 md:w-14 md:h-14 rounded-full border-2 border-[#121212] flex items-center justify-center bg-[#EBEBE6]">
+          <div className="work-card-arrow w-12 h-12 md:w-14 md:h-14 rounded-full border-2 border-[#121212] flex items-center justify-center bg-[#EBEBE6]">
             <ArrowUpRight size={20} />
           </div>
         </div>
@@ -482,11 +482,11 @@ export default function App() {
             </div>
 
             <div
-              className="absolute inset-0 flex items-center justify-center p-[clamp(20px,5vw,56px)] overflow-visible"
+              className="work-stack-stage absolute inset-0 flex items-center justify-center p-[clamp(20px,5vw,56px)] overflow-visible"
             >
               <div
                 ref={workStackRef}
-                className="relative overflow-visible"
+                className="work-stack-frame relative overflow-visible"
                 style={{
                   perspective: '1200px',
                   width: 'min(88vw, 900px)',

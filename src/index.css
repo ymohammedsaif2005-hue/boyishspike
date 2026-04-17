@@ -1,1 +1,99 @@
 @import "tailwindcss";
+
+@media (max-width: 768px) {
+	#work .work-stack-stage {
+		padding: 24px;
+	}
+
+	#work .work-stack-frame {
+		width: calc(100vw - 48px) !important;
+		max-width: calc(100vw - 48px) !important;
+		max-height: 75svh !important;
+		aspect-ratio: 16 / 10 !important;
+	}
+
+	#work .work-card {
+		border-radius: 20px;
+		box-shadow: 0 14px 36px rgba(18, 18, 18, 0.18);
+	}
+
+	#work .work-card-top {
+		height: 50%;
+		background: linear-gradient(145deg, #121212 0%, #661111 70%, #c02626 100%);
+	}
+
+	#work .work-card-top-content {
+		padding: 12px;
+	}
+
+	#work .work-card-title {
+		font-size: clamp(2rem, 9.2vw, 2.6rem);
+		line-height: 0.95;
+		margin-top: 6px;
+	}
+
+	#work .work-card-meta {
+		display: block !important;
+		max-width: 7.5rem;
+	}
+
+	#work .work-card-meta p:first-child {
+		font-size: 0.5rem;
+		letter-spacing: 0.3em;
+	}
+
+	#work .work-card-meta p:last-child {
+		margin-top: 2px;
+		font-size: 0.52rem;
+		line-height: 1.2;
+	}
+
+	#work .work-card-bottom {
+		height: 50%;
+		grid-template-columns: 1.22fr 0.78fr;
+	}
+
+	#work .work-card-bottom-left {
+		border-right: 1px solid #121212;
+		padding: 12px;
+	}
+
+	#work .work-card-category {
+		font-size: 0.58rem;
+		letter-spacing: 0.27em;
+		margin-bottom: 8px;
+	}
+
+	#work .work-card-summary {
+		font-size: 0.83rem;
+		line-height: 1.4;
+	}
+
+	#work .work-card-bottom-right {
+		padding: 12px;
+		display: flex;
+		flex-direction: column;
+		align-items: flex-end;
+		justify-content: space-between;
+	}
+
+	#work .work-card-scroll p:first-child {
+		font-size: 0.52rem;
+		letter-spacing: 0.32em;
+	}
+
+	#work .work-card-scroll p:last-child {
+		font-size: 2rem;
+		line-height: 1;
+	}
+
+	#work .work-card-arrow {
+		width: 40px;
+		height: 40px;
+	}
+
+	#work .work-card-arrow svg {
+		width: 17px;
+		height: 17px;
+	}
+}
