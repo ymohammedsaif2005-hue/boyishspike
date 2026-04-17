@@ -123,7 +123,7 @@ const Navbar = ({ onWorkClick }) => {
             initial={{ opacity: 0, x: '100%' }}
             animate={{ opacity: 1, x: 0 }}
             exit={{ opacity: 0, x: '100%' }}
-            className="fixed inset-0 bg-[#121212] text-white flex flex-col items-center justify-center gap-8 text-3xl font-bold uppercase tracking-widest"
+            className="fixed inset-0 bg-white text-[#C02626] flex flex-col items-center justify-center gap-8 text-3xl font-bold uppercase tracking-widest"
           >
             <button type="button" onClick={() => { setIsOpen(false); onWorkClick?.(); }}>Work</button>
             <a href="#services" onClick={() => setIsOpen(false)}>Services</a>
