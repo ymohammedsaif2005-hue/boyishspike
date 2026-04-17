@@ -6,10 +6,10 @@
 	}
 
 	#work .work-stack-frame {
-		width: calc(100vw - 48px) !important;
-		max-width: calc(100vw - 48px) !important;
-		max-height: 75svh !important;
-		aspect-ratio: 16 / 10 !important;
+		width: min(calc(100vw - 48px), 320px) !important;
+		max-width: min(calc(100vw - 48px), 320px) !important;
+		max-height: calc(100svh - 120px) !important;
+		aspect-ratio: 11 / 10 !important;
 	}
 
 	#work .work-card {
@@ -19,7 +19,6 @@
 
 	#work .work-card-top {
 		height: 50%;
-		background: linear-gradient(145deg, #121212 0%, #661111 70%, #c02626 100%);
 	}
 
 	#work .work-card-top-content {
