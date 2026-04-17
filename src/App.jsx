@@ -358,7 +358,7 @@ export default function App() {
       const scrollTrigger = ScrollTrigger.create({
         trigger: section,
         start: 'top top',
-        end: () => `+=${Math.round(window.innerHeight * (isMobile ? totalCards + 0.15 : totalCards + 0.35))}`,
+        end: () => `+=${Math.round(window.innerHeight * (isMobile ? totalCards - 0.55 : totalCards - 0.4))}`,
         pin: true,
         scrub: 1,
         invalidateOnRefresh: true,
@@ -420,12 +420,22 @@ export default function App() {
               });
             } else if (index === activeIndex) {
               // PRESENT: The active 'peeling' card
+              const isLastCard = index === totalCards - 1;
+              const lastExitProgress = isLastCard
+                ? Math.max((segmentProgress - 0.82) / 0.18, 0)
+                : 0;
+              const yTravel = isLastCard
+                ? segmentProgress * (isMobile ? 160 : 220) + lastExitProgress * (isMobile ? 420 : 520)
+                : segmentProgress * cardTravel;
+
               gsap.set(card, {
                 // Start peel exactly from the current stacked slot (no downward jump).
-                y: (index - activeIndex) * 16 - segmentProgress * cardTravel,
-                rotationX: segmentProgress * 45,
+                y: (index - activeIndex) * 16 - yTravel,
+                rotationX: isLastCard
+                  ? segmentProgress * 10 + lastExitProgress * 25
+                  : segmentProgress * 45,
                 scale: 1,
-                opacity: 1 - segmentProgress * 0.5,
+                opacity: isLastCard ? 1 - lastExitProgress : 1 - segmentProgress * 0.5,
                 pointerEvents: 'auto',
                 visibility: 'visible'
               });
