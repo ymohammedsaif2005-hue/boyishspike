@@ -94,7 +94,7 @@ const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
-    <nav className="fixed top-0 w-full z-50 px-6 py-6 flex justify-between items-center mix-blend-difference text-white">
+    <nav className="fixed top-0 w-full z-50 px-6 py-4 md:py-6 flex justify-between items-center bg-[#F5F5F0] text-[#121212] border-b border-[#121212]/15 md:bg-transparent md:text-white md:border-0 md:mix-blend-difference">
       <button
         type="button"
         onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
@@ -387,7 +387,8 @@ export default function App() {
             } else if (index === activeIndex) {
               // PRESENT: The active 'peeling' card
               gsap.set(card, {
-                y: index * 16 - segmentProgress * 800,
+                // Start peel exactly from the current stacked slot (no downward jump).
+                y: (index - activeIndex) * 16 - segmentProgress * 800,
                 rotationX: segmentProgress * 45,
                 scale: 1,
                 opacity: 1 - segmentProgress * 0.5,
