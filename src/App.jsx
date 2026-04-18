@@ -487,8 +487,11 @@ export default function App() {
           />
           <div className="absolute inset-0 bg-gradient-to-b from-[#121212]/15 via-[#121212]/25 to-[#121212]/55" />
         </div>
-        <div className="absolute inset-0 z-0 md:hidden bg-gradient-to-b from-[#d85757] via-[#c02626] to-[#7a1010]" />
-
+        <div className="absolute inset-0 z-0 flex md:hidden">
+          <div className="w-1/3 h-full bg-cover bg-center opacity-10" style={{ backgroundImage: "url('libas.jpg')" }} />
+          <div className="w-1/3 h-full bg-cover bg-center opacity-10" style={{ backgroundImage: "url('darl red.jpg')" }} />
+          <div className="w-1/3 h-full bg-cover bg-center opacity-10" style={{ backgroundImage: "url('Libas tennis.jpg')" }} />
+        </div>
         <div className="text-center z-10 text-white">
           <motion.h1 
             initial={{ y: 100, opacity: 0 }}
