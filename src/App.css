@@ -183,3 +183,34 @@
   }
 }
 
+@media (min-width: 768px) {
+  .hero-title {
+    text-shadow:
+      1px 1px 0 rgba(0, 0, 0, 0.54),
+      2px 2px 0 rgba(0, 0, 0, 0.48),
+      3px 3px 0 rgba(0, 0, 0, 0.42),
+      4px 4px 0 rgba(0, 0, 0, 0.36),
+      5px 5px 0 rgba(0, 0, 0, 0.3),
+      8px 10px 16px rgba(0, 0, 0, 0.46);
+    text-rendering: geometricPrecision;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    -webkit-text-stroke: 0.35px rgba(255, 255, 255, 0.35);
+  }
+
+  .hero-spike {
+    text-shadow:
+      1px 1px 0 rgba(0, 0, 0, 0.6),
+      2px 2px 0 rgba(0, 0, 0, 0.54),
+      3px 3px 0 rgba(0, 0, 0, 0.46),
+      4px 4px 0 rgba(0, 0, 0, 0.38),
+      8px 10px 16px rgba(0, 0, 0, 0.5);
+    -webkit-text-stroke: 0.3px rgba(255, 255, 255, 0.2);
+  }
+
+  .hero-subcopy {
+    text-shadow: 1px 1px 0 rgba(0, 0, 0, 0.32), 2px 2px 0 rgba(0, 0, 0, 0.24);
+  }
+}
+
+

@@ -3,6 +3,7 @@ import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import Lenis from 'lenis';
 import { motion, AnimatePresence } from 'framer-motion';
+import { Component as EtherealShadow } from '@/components/etheral-shadow';
 import { 
   ArrowUpRight, 
   ExternalLink, 
@@ -105,7 +106,7 @@ const Navbar = ({ onWorkClick }) => {
       
       {/* Desktop Menu */}
       <div className="hidden md:flex gap-12 font-medium text-sm tracking-widest uppercase">
-        <button type="button" onClick={onWorkClick} className="hover:line-through transition-all">Work</button>
+        <button type="button" onClick={onWorkClick} className="hover:line-through transition-all">WORK</button>
         <a href="#services" className="hover:line-through transition-all">Services</a>
         <a href="#about" className="hover:line-through transition-all">About</a>
         <a href="#contact" className="hover:line-through transition-all">Contact</a>
@@ -133,7 +134,7 @@ const Navbar = ({ onWorkClick }) => {
             >
               <X size={28} />
             </button>
-            <button type="button" onClick={() => { setIsOpen(false); onWorkClick?.(); }}>Work</button>
+            <button type="button" onClick={() => { setIsOpen(false); onWorkClick?.(); }}>WORK</button>
             <a href="#services" onClick={() => setIsOpen(false)}>Services</a>
             <a href="#about" onClick={() => setIsOpen(false)}>About</a>
             <a href="#contact" onClick={() => setIsOpen(false)}>Contact</a>
@@ -476,6 +477,16 @@ export default function App() {
 
       {/* Hero Section */}
       <header className="relative h-screen flex flex-col justify-center items-center px-6 overflow-hidden">
+        <div className="absolute inset-0 z-0 pointer-events-none hidden md:block">
+          <EtherealShadow
+            color="rgba(192, 38, 38, 0.88)"
+            animation={{ scale: 100, speed: 90 }}
+            noise={{ opacity: 1, scale: 1.2 }}
+            sizing="fill"
+            className="w-full h-full"
+          />
+          <div className="absolute inset-0 bg-gradient-to-b from-[#121212]/15 via-[#121212]/25 to-[#121212]/55" />
+        </div>
         {/* Logo Background Images (fading in and out) */}
         <div className="absolute inset-0 flex">
           <div className="w-1/3 h-full bg-cover bg-center opacity-10" style={{ backgroundImage: "url('libas.jpg')" }} />
@@ -487,9 +498,9 @@ export default function App() {
             initial={{ y: 100, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
             transition={{ duration: 0.8, ease: "circOut" }}
-            className="text-[20vw] sm:text-[15vw] leading-[0.8] font-black italic tracking-tighter uppercase"
+            className="hero-title text-white text-[20vw] sm:text-[15vw] leading-[0.8] font-black italic tracking-tighter uppercase"
           >
-            Boyish<br/><span className="text-[#C02626]">Spike</span>
+            Boyish<br/><span className="hero-spike text-[#C02626]">Spike</span>
           </motion.h1>
           <motion.div 
             initial={{ opacity: 0 }}
@@ -497,12 +508,12 @@ export default function App() {
             transition={{ delay: 0.5 }}
             className="mt-8 flex flex-col items-center gap-4"
           >
-            <p className="max-w-xl text-lg md:text-2xl font-medium leading-tight px-2">
+            <p className="hero-subcopy max-w-xl text-white text-lg md:text-2xl font-medium leading-tight px-2">
               A high-end web architecture studio. We design, build, and scale digital products that define industries.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 mt-6 w-full sm:w-auto px-4 sm:px-0">
-              <button type="button" onClick={scrollToWorkTop} className="bg-[#121212] text-white px-8 py-4 rounded-full font-bold uppercase tracking-widest text-sm hover:bg-[#C02626] transition-colors">View Projects</button>
-              <button onClick={() => window.open('https://forms.gle/kRLz3wktyXg8ajANA', '_blank')} className="border-2 border-[#121212] px-8 py-4 rounded-full font-bold uppercase tracking-widest text-sm hover:bg-[#121212] hover:text-white transition-all">Start Project</button>
+              <button type="button" onClick={scrollToWorkTop} className="bg-[#121212] text-white px-8 py-4 rounded-full font-bold uppercase tracking-widest text-sm hover:bg-[#C02626] transition-colors md:bg-transparent md:text-white md:border-2 md:border-[#121212] md:hover:bg-white md:hover:text-[#121212] md:hover:border-[#C02626] md:active:bg-white md:active:text-[#121212] md:active:border-[#C02626] md:focus-visible:bg-white md:focus-visible:text-[#121212] md:focus-visible:border-[#C02626] md:focus-visible:outline-none">View Projects</button>
+              <button onClick={() => window.open('https://forms.gle/kRLz3wktyXg8ajANA', '_blank')} className="border-2 border-[#121212] px-8 py-4 rounded-full font-bold uppercase tracking-widest text-sm hover:bg-[#121212] hover:text-white transition-all md:bg-transparent md:text-white md:border-2 md:border-[#121212] md:hover:bg-white md:hover:text-[#121212] md:hover:border-[#C02626] md:active:bg-white md:active:text-[#121212] md:active:border-[#C02626] md:focus-visible:bg-white md:focus-visible:text-[#121212] md:focus-visible:border-[#C02626] md:focus-visible:outline-none">Start Project</button>
             </div>
           </motion.div>
         </div>
