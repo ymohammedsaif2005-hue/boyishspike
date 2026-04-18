@@ -497,16 +497,9 @@ export default function App() {
             initial={{ y: 100, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
             transition={{ duration: 0.8, ease: "circOut" }}
-            style={{
-              textShadow: '0 2px 2px rgba(0,0,0,0.2), 0 16px 30px rgba(0,0,0,0.38), 0 28px 48px rgba(0,0,0,0.28)',
-              textRendering: 'geometricPrecision',
-              WebkitFontSmoothing: 'antialiased',
-              MozOsxFontSmoothing: 'grayscale',
-              WebkitTextStroke: '0.35px rgba(255,255,255,0.35)'
-            }}
-            className="text-[20vw] sm:text-[15vw] leading-[0.8] font-black italic tracking-tighter uppercase"
+            className="hero-title text-[20vw] sm:text-[15vw] leading-[0.8] font-black italic tracking-tighter uppercase"
           >
-            Boyish<br/><span className="text-[#C02626]" style={{ textShadow: '0 2px 2px rgba(0,0,0,0.26), 0 14px 28px rgba(0,0,0,0.42), 0 24px 42px rgba(0,0,0,0.3)', WebkitTextStroke: '0.3px rgba(255,255,255,0.2)' }}>Spike</span>
+            Boyish<br/><span className="hero-spike text-[#C02626]">Spike</span>
           </motion.h1>
           <motion.div 
             initial={{ opacity: 0 }}
