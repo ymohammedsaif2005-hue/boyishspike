@@ -498,7 +498,7 @@ export default function App() {
             initial={{ y: 100, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
             transition={{ duration: 0.8, ease: "circOut" }}
-            className="hero-title text-white text-[20vw] sm:text-[15vw] leading-[0.8] font-black italic tracking-tighter uppercase"
+            className="hero-title text-[#121212] md:text-white text-[20vw] sm:text-[15vw] leading-[0.8] font-black italic tracking-tighter uppercase"
           >
             Boyish<br/><span className="hero-spike text-[#C02626]">Spike</span>
           </motion.h1>
@@ -508,7 +508,7 @@ export default function App() {
             transition={{ delay: 0.5 }}
             className="mt-8 flex flex-col items-center gap-4"
           >
-            <p className="hero-subcopy max-w-xl text-white text-lg md:text-2xl font-medium leading-tight px-2">
+            <p className="hero-subcopy max-w-xl text-[#121212] md:text-white text-lg md:text-2xl font-medium leading-tight px-2">
               A high-end web architecture studio. We design, build, and scale digital products that define industries.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 mt-6 w-full sm:w-auto px-4 sm:px-0">
