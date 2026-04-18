@@ -477,7 +477,7 @@ export default function App() {
 
       {/* Hero Section */}
       <header className="relative h-screen flex flex-col justify-center items-center px-6 overflow-hidden">
-        <div className="absolute inset-0 z-0 pointer-events-none">
+        <div className="absolute inset-0 z-0 pointer-events-none hidden md:block">
           <EtherealShadow
             color="rgba(192, 38, 38, 0.88)"
             animation={{ scale: 100, speed: 90 }}
@@ -487,6 +487,7 @@ export default function App() {
           />
           <div className="absolute inset-0 bg-gradient-to-b from-[#121212]/15 via-[#121212]/25 to-[#121212]/55" />
         </div>
+        <div className="absolute inset-0 z-0 md:hidden bg-gradient-to-b from-[#d85757] via-[#c02626] to-[#7a1010]" />
 
         <div className="text-center z-10 text-white">
           <motion.h1 
